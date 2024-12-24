@@ -1,0 +1,41 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: pos_postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_DB: pos_system
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - pos_network
+
+  backend:
+    build:
+      context: ./RetailPOSBack
+      dockerfile: Dockerfile
+    container_name: pos_backend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: pos_system
+      DB_USER: postgres
+      DB_PASSWORD: yourpassword
+      JWT_SECRET: your_secret_key
+    depends_on:
+      - postgres
+    networks:
+      - pos_network
+
+networks:
+  pos_network:
+
+volumes:
+  postgres_data:
