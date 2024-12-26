@@ -8,8 +8,7 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule, {
         logger: ['log', 'error', 'warn', 'debug'], // Habilitar niveles de registro
     });
-    app.useGlobalPipes(new ValidationPipe());
-
+    app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
     // Configuración de Swagger
     const config = new DocumentBuilder()
         .setTitle('POS Backend API')

@@ -11,26 +11,26 @@ import { Address } from './address.entity';
 
 @Entity()
 export class Customer {
-    @PrimaryColumn()
-    document: string; // Primary key - Document number, unique for each customer
+    @PrimaryColumn({ comment: "Número o código de documento del cliente" })
+    document: string;
 
-    @Column()
+    @Column({comment: "Nombre completo del cliente"})
     name: string; // Full name of the customer
 
-    @Column({ nullable: true })
+    @Column({ nullable: true, comment: "Nombre comercial o razón social" })
     commercialName: string; // Commercial name or trade name
 
-    @Column()
-    documentType: string; // Document type, e.g., DNI, RUC
+    @Column({comment: "Tipo de documento de identidad del cliente: DNI, RUC, OTROS"})
+    documentType: string;
 
-    @Column()
+    @Column({comment: "Tipo de persona, Natural o Jurídica: SND, PJ, PN"})
+    personType: string; // Type of person, e.g., Natural or Legal
+
+    @Column({comment: "Tipo de agente: NINGUNO, PERCEPTOR, RETENEDOR"})
     agentType: string; // Type of agent, e.g., Individual or Company
 
-    @Column({ nullable: true })
+    @Column({ nullable: true, comment: "Observaciones o notas" })
     observation: string; // Observations or notes
-
-    @Column({ default: false })
-    isTransportAgency: boolean; // Indicates if the customer is a transport agency
 
     @Column({ nullable: true })
     email: string; // Email address of the customer

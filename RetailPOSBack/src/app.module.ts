@@ -15,6 +15,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       database: process.env.DB_NAME || 'pos_system',
       autoLoadEntities: true, // Carga automáticamente las entidades
       synchronize: true, // Sincroniza automáticamente el esquema (solo para desarrollo)
+      dropSchema: true,
       logging: true, // Habilitar el registro de consultas SQL
     }),
     CustomersModule,
