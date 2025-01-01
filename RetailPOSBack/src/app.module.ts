@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CustomersModule } from './customers/customers.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import {GeoLocationModule} from "./geo-location/geo-location.module";
 
 @Module({
   imports: [
@@ -13,14 +14,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       username: process.env.DB_USER || 'postgres',
       password: process.env.DB_PASSWORD || 'yourpassword',
       database: process.env.DB_NAME || 'pos_system',
-      autoLoadEntities: true, // Carga automáticamente las entidades
-      synchronize: true, // Sincroniza automáticamente el esquema (solo para desarrollo)
-      dropSchema: true,
-      logging: true, // Habilitar el registro de consultas SQL
+      autoLoadEntities: true,
+      synchronize: true,
+      dropSchema: false,
+      logging: true,
     }),
     CustomersModule,
-  ], // Módulos que tu aplicación importa
-  controllers: [AppController], // Controladores raíz
-  providers: [AppService], // Servicios raíz
+    GeoLocationModule,
+  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

@@ -42,7 +42,7 @@ export class Customer {
     priceList: string; // Price list applicable to the customer
 
     @Column({ nullable: true })
-    sourceApplication: string; // Application where the customer data originates
+    sourceApplication: string; // Application where the customer resource originates
 
     @Column({ nullable: true })
     customerGroup: string; // Customer grouping for categorization
