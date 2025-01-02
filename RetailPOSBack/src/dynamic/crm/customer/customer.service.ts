@@ -7,7 +7,7 @@ import { CustomerDto } from './dto/customer.dto';
 import { AddressDto } from './dto/address.dto';
 
 @Injectable()
-export class CustomersService {
+export class CustomerService {
     constructor(
         @InjectRepository(Customer)
         private readonly customerRepository: Repository<Customer>,
@@ -15,7 +15,9 @@ export class CustomersService {
         private readonly addressRepository: Repository<Address>,
     ) {}
 
-    async createOrUpdateCustomer(customerDto: CustomerDto, createdBy: string): Promise<string> {
+    async createOrUpdateCustomer(schema_key:string, customerDto: CustomerDto, createdBy: string): Promise<string> {
+        const schema = !schema_key ? 'crm' : `${schema_key}crm`;
+        await this.customerRepository.query(`SET search_path TO "${schema}", public`);
         const existingCustomer = await this.customerRepository.findOne({
             where: { document: customerDto.document },
             relations: ['addresses'],
@@ -57,10 +59,13 @@ export class CustomersService {
     }
 
     async createOrUpdateAddress(
+        schema_key:string,
         document: string,
         addressDto: AddressDto,
         createdBy: string,
     ): Promise<string> {
+        const schema = !schema_key ? 'crm' : `${schema_key}crm`;
+        await this.customerRepository.query(`SET search_path TO ${schema}, public`);
         if (!document) {
             throw new Error('Customer document is required.');
         }

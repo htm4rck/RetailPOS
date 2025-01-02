@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {Repository, Like, ILike} from 'typeorm';
-import { GeoLocation } from './geo-location.entity';
-import {GeoLocationResponseDto} from "./geo-location.dto";
+import { GeoLocation } from './entity/geo-location.entity';
+import {GeoLocationResponseDto} from "./dto/geo-location.dto";
 
 @Injectable()
 export class GeoLocationService {

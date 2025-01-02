@@ -1,7 +1,7 @@
 import { Injectable, OnApplicationBootstrap, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
-import { GeoLocation } from './geo-location.entity';
+import { GeoLocation } from './entity/geo-location.entity';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as csvParser from 'csv-parser';
@@ -17,6 +17,30 @@ export class GeoLocationLoaderService implements OnApplicationBootstrap {
     ) {}
 
     async onApplicationBootstrap() {
+
+        this.logger.log('Entities loaded:', JSON.stringify(this.geoLocationRepository.manager.connection.entityMetadatas));
+        const entityFound = this.geoLocationRepository.manager.connection.entityMetadatas.find(
+            (entity) => entity.name === 'GeoLocation'
+        );
+        this.logger.log(`GeoLocation entity found: ${entityFound ? 'Yes' : 'No'}`);
+
+        const isTableCreated = await this.geoLocationRepository.manager
+            .query(`SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = 'geo_location')`);
+
+        if (!isTableCreated[0].exists) {
+            this.logger.error('GeoLocation table is not created yet.');
+            return;
+        }
+
+        this.logger.log('GeoLocation table is ready. Proceeding to load data...');
+        console.log('GeoLocationLoaderService: Starting onApplicationBootstrap');
+        this.logger.log('Starting GeoLocationLoaderService...');
+        this.logger.log(`Metadata: ${JSON.stringify(this.geoLocationRepository.metadata)}`);
+        const metadata = this.geoLocationRepository.metadata;
+        if (!metadata) {
+            this.logger.error('Metadata for GeoLocation is not loaded.');
+            return;
+        }
         const filePath = path.join(__dirname, '../../resource/geo_location.csv');
 
         if (!fs.existsSync(filePath)) {

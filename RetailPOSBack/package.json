@@ -4,9 +4,10 @@
   "description": "Retail POS backend migrated to NestJS",
   "main": "dist/main.js",
   "scripts": {
-    "start": "nest start",
-    "start:dev": "nest start --watch",
-    "build": "nest build"
+    "start": "concurrently \"npm run copy-resources\" \"nest start\"",
+    "start:dev": "concurrently \"npm run copy-resources\" \"nest start --watch\"",
+    "build": "nest build && npm run copy-resources",
+    "copy-resources": "copyfiles -u 1 src/resource/**/* dist"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
@@ -27,6 +28,8 @@
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.0.0",
+    "concurrently": "^9.1.2",
+    "copyfiles": "^2.4.1",
     "typescript": "^4.7.0"
   }
 }

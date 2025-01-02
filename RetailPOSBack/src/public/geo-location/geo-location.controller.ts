@@ -1,7 +1,7 @@
 import {Controller, Get, Post, Patch, Delete, Param, Body, NotFoundException, Query} from '@nestjs/common';
 import { GeoLocationService } from './geo-location.service';
-import { GeoLocation } from './geo-location.entity';
-import {GeoLocationResponseDto} from "./geo-location.dto";
+import { GeoLocation } from './entity/geo-location.entity';
+import {GeoLocationResponseDto} from "./dto/geo-location.dto";
 
 @Controller('geo-locations')
 export class GeoLocationController {
